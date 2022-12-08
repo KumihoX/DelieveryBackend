@@ -51,6 +51,7 @@ class user_register_model
         $this->gender = $gender;
     }
 
+    //TODO: Переделать базу данных
     public function save() {
         $GLOBALS['link']->query(
             "INSERT User (id, full_name, password, email, address, birth_date, gender, phone_number)

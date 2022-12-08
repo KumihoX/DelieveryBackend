@@ -1,17 +1,15 @@
 <?php
-
     header('Content-type: application/json');
     include_once 'router.php';
     global $link;
 
     $link = new mysqli("127.0.0.1", "delivery_user", "12345678", "delivery_db");
 
-    function get_method()
-    {
+    function get_method(){
         return $_SERVER['REQUEST_METHOD'];
     }
 
-function get_address(){
+    function get_address(){
         $url = isset($_GET['q']) ? $_GET['q'] : '';
         $url = rtrim($url, '/');
         return explode('/', $url);
