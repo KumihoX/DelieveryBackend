@@ -9,13 +9,15 @@
         return $_SERVER['REQUEST_METHOD'];
     }
 
-    function get_address(){
-        $url = isset($_GET['q']) ? $_GET['q'] : '';
+    function get_address(): array
+    {
+        $url = $_GET['q'] ?? '';
         $url = rtrim($url, '/');
         return explode('/', $url);
     }
 
-    function get_data(){
+    function get_data(): stdClass
+    {
         $data = new stdClass();
         $data -> params = [];
         $data_get = $_GET;
@@ -39,7 +41,7 @@
         route($method, $address, $data);
     }
     else{
-        echo("И что прикажете с этим делать?");
+        echo("И что прикажете с этим делать? 404");
     }
 
 

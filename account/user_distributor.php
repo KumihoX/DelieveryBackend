@@ -1,5 +1,6 @@
 <?php
-    function user_distributor($method, $address, $data){
+    function user_distributor($method, $address, $data): void
+    {
         switch ($method) {
             case 'POST':
                 switch ($address[1]){
@@ -13,12 +14,14 @@
                         break;
                     case 'logout':
                         include_once 'logout.php';
+                        logout();
                         break;
                     default:
                         break;
                 }
                 break;
             case 'GET':
+                include_once 'profile.php';
                 break;
             case 'PUT':
                 break;

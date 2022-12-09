@@ -1,5 +1,6 @@
 <?php
-    function route($method, $address, $data){
+    function route($method, $address, $data): void
+    {
         switch($address[0]) {
             case 'account':
                 include_once 'account/user_distributor.php';

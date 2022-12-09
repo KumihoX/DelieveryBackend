@@ -2,39 +2,42 @@
 
 class user_register_model
 {
-    private $fullName;
-    private $password;
-    private $email;
-    private $address;
-    private $birthDate;
-    private $gender;
-    private $phoneNumber;
+    private string $fullName;
+    private string $password;
+    private string $email;
+    private string $address;
+    private string $birthDate;
+    private string $gender;
+    private string $phoneNumber;
 
     public function __construct($data){
         $this->check_name($data->fullName);
         $this->check_password($data->password);
         $this->check_email($data->email);
-        $this->address = isset($data->address) ? $data->address : null;
+        $this->address = $data->address ?? null;
         $this->birthDate = isset($data->birthDate) ? date('d.m.Y', strtotime($data->birthDate)) : null;
         $this->check_gender($data->gender);
         $this->check_phone($data->phoneNumber);
     }
 
-    private function check_name($name) {
+    private function check_name($name): void
+    {
         if (strlen($name) < 1){
             throw new Exception('Вы ввели слишком короткое имя');
         }
         $this->fullName = $name;
     }
 
-    private function check_password($password){
+    private function check_password($password): void
+    {
         if (strlen($password) < 6){
             throw new Exception('Вы ввели слишком короткий пароль');
         }
         $this->password = hash("sha1", $password);
     }
 
-    private function check_email($email){
+    private function check_email($email): void
+    {
         $valid_email = filter_var($email, FILTER_VALIDATE_EMAIL);
         $exist_email = $GLOBALS['link']->query("SELECT email FROM User WHERE email = '$email'")->fetch_assoc();
         if (!$valid_email) {
@@ -46,14 +49,16 @@ class user_register_model
         $this->email = $email;
     }
 
-    private function check_gender($gender){
+    private function check_gender($gender): void
+    {
         if ($gender != 'Male' && $gender != "Female"){
             throw new Exception('Некоррекный гендер');
         }
         $this->gender = $gender;
     }
 
-    private function check_phone($phone){
+    private function check_phone($phone): void
+    {
         $number_without_space = preg_replace('/\s/','', $phone);
         $correct_number_pattern = '/\+7\([0-9]{3}\)[0-9]{3}-[0-9]{2}-[0-9]{2}/';
 
@@ -68,7 +73,8 @@ class user_register_model
         $this->phoneNumber = $phone;
     }
 
-    public function save() {
+    public function save(): void
+    {
         $GLOBALS['link']->query(
             "INSERT User (id, fullName, email, password, address, birthDate, gender, phoneNumber)
                 values(
