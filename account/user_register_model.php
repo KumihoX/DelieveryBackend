@@ -55,7 +55,7 @@ class user_register_model
 
     private function check_phone($phone){
         $number_without_space = preg_replace('/\s/','', $phone);
-        $correct_number_pattern = '/\+[7]\([0-9]{3}\)[0-9]{3}-[0-9]{2}-[0-9]{2}/';
+        $correct_number_pattern = '/\+7\([0-9]{3}\)[0-9]{3}-[0-9]{2}-[0-9]{2}/';
 
         $phone_is_correct = preg_match($correct_number_pattern, $number_without_space);
         if (!isset($phone)){
