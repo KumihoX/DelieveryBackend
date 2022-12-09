@@ -5,6 +5,6 @@ function login($data) {
 
     if ($login_data-> user_exist()) {
         include_once 'authorization.php';
-        authorization($data);
+        authorization($data->body);
     }
 }

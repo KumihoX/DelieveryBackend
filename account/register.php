@@ -6,5 +6,5 @@
         $new_user -> save();
 
         include_once 'authorization.php';
-        authorization($data);
+        authorization($data->body);
     }

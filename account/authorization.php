@@ -5,10 +5,8 @@ function authorization($data): void
     $jwt = new JWT;
     $token = $jwt->generate(['email' => $data->email]);
 
-    echo json_encode(
-        array(
-            //"message" => 'Вы в системе, мои поздравления!',
-            "token" => $token
-        )
-    );
+    include_once 'token_response.php';
+    $token_response = new token_response($token);
+
+    echo json_encode($token_response->get_token());
 }
