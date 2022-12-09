@@ -1,11 +1,9 @@
 <?php
-
     function route($method, $address, $data){
-        switch($address[1]) {
-
+        switch($address[0]) {
             case 'account':
                 include_once 'account/user_distributor.php';
-                user_controller($method, $address, $data);
+                user_distributor($method, $address, $data);
                 break;
 
             case 'basket':

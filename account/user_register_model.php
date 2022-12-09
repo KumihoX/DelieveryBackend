@@ -15,11 +15,9 @@ class user_register_model
         $this->check_password($data->password);
         $this->check_email($data->email);
         $this->address = isset($data->address) ? $data->address : null;
-        //TODO: Сделать проверку на соответствие даты типу $date-time
-        $this->birthDate = isset($data->birthDate) ? $data->birthDate : null;
+        $this->birthDate = isset($data->birthDate) ? date('d.m.Y', strtotime($data->birthDate)) : null;
         $this->check_gender($data->gender);
-        //TODO: Сделать проверку на соответствие телефона типу $tel
-        $this->phoneNumber = isset($data->phoneNumber) ? $data->phoneNumber : null;
+        $this->check_phone($data->phoneNumber);
     }
 
     private function check_name($name) {
@@ -33,13 +31,17 @@ class user_register_model
         if (strlen($password) < 6){
             throw new Exception('Вы ввели слишком короткий пароль');
         }
-        $this->password = $password;
+        $this->password = hash("sha1", $password);
     }
 
-    //TODO: Проверка email на соответствие стандартным требованиям
     private function check_email($email){
-        if (strlen($email) < 1){
-            throw new Exception('Вы ввели слишком короткий email');
+        $valid_email = filter_var($email, FILTER_VALIDATE_EMAIL);
+        $exist_email = $GLOBALS['link']->query("SELECT email FROM User WHERE email = '$email'")->fetch_assoc();
+        if (!$valid_email) {
+            throw new Exception('Вы ввели неккоректный email');
+        }
+        if($exist_email){
+            throw new Exception('Пользователь с таким email уже существует');
         }
         $this->email = $email;
     }
@@ -51,15 +53,29 @@ class user_register_model
         $this->gender = $gender;
     }
 
-    //TODO: Переделать базу данных
+    private function check_phone($phone){
+        $number_without_space = preg_replace('/\s/','', $phone);
+        $correct_number_pattern = '/\+[7]\([0-9]{3}\)[0-9]{3}-[0-9]{2}-[0-9]{2}/';
+
+        $phone_is_correct = preg_match($correct_number_pattern, $number_without_space);
+        if (!isset($phone)){
+            $phone = null;
+        }
+        else if (!$phone_is_correct){
+            throw new Exception('Некоррекный номер телефона');
+        }
+
+        $this->phoneNumber = $phone;
+    }
+
     public function save() {
         $GLOBALS['link']->query(
-            "INSERT User (id, full_name, password, email, address, birth_date, gender, phone_number)
+            "INSERT User (id, fullName, email, password, address, birthDate, gender, phoneNumber)
                 values(
                     UUID(),
                     '$this->fullName',
-                    '$this->password',
                     '$this->email',
+                    '$this->password',
                     '$this->address',
                     '$this->birthDate',
                     '$this->gender',

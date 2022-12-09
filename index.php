@@ -31,11 +31,15 @@
         return $data;
     }
 
+    //Реализация с учетом api/
     $address = array_slice(get_address(), 1);
     $data = get_data();
     $method = get_method();
     if ($address != null){
         route($method, $address, $data);
+    }
+    else{
+        echo("И что прикажете с этим делать?");
     }
 
 

@@ -1,5 +1,5 @@
 <?php
-    function user_controller($method, $address, $data){
+    function user_distributor($method, $address, $data){
         switch ($method) {
             case 'POST':
                 switch ($address[1]){
@@ -9,6 +9,7 @@
                         break;
                     case 'login':
                         include_once 'login.php';
+                        login($data);
                         break;
                     case 'logout':
                         include_once 'logout.php';
