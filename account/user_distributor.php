@@ -25,6 +25,8 @@
                 get_profile();
                 break;
             case 'PUT':
+                include_once 'profile.php';
+                put_profile($data);
                 break;
         }
     }

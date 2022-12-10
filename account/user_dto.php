@@ -1,5 +1,5 @@
 <?php
-
+//TODO: Сделать преобразование даты в правильный тип
 class user_dto
 {
     private string $id;

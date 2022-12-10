@@ -36,9 +36,7 @@ class JWT
 
         $currentTime = new DateTime();
         $payload['nbf'] = $currentTime->getTimestamp();
-        echo json_encode($payload['nbf'].'\n');
         $payload['exp'] = $currentTime->getTimestamp() + 3600;
-        echo json_encode($payload['exp']);
         $payload['iat'] = $currentTime->getTimestamp();
         $payload['iss'] = "http://localhost/";
         $payload['aud'] = "http://localhost/";
