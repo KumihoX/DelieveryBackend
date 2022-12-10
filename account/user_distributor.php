@@ -22,6 +22,7 @@
                 break;
             case 'GET':
                 include_once 'profile.php';
+                get_profile();
                 break;
             case 'PUT':
                 break;

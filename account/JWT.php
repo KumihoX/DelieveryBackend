@@ -4,6 +4,8 @@ class JWT
 {
     private $headers;
     private $secret;
+
+    private $token;
     private $data;
 
     public function __construct()
@@ -15,13 +17,28 @@ class JWT
         $this->secret = 'scrtcd';
     }
 
-    public function generate(array $payload): string
+    private function encode(string $str): string
+    {
+        return rtrim(strtr(base64_encode($str), '+/', '-_'), '='); // base64 encode string
+    }
+
+    private function get_token_from_header()
+    {
+        $headers = getallheaders();
+        $auth = $headers['Authorization'];
+        $auth_list = explode(' ', $auth);
+        $this->token = $auth_list[1];
+    }
+
+    private function generate(array $payload): string
     {
         $headers = $this->encode(json_encode($this->headers));
 
         $currentTime = new DateTime();
         $payload['nbf'] = $currentTime->getTimestamp();
+        echo json_encode($payload['nbf'].'\n');
         $payload['exp'] = $currentTime->getTimestamp() + 3600;
+        echo json_encode($payload['exp']);
         $payload['iat'] = $currentTime->getTimestamp();
         $payload['iss'] = "http://localhost/";
         $payload['aud'] = "http://localhost/";
@@ -34,14 +51,51 @@ class JWT
         return "$headers.$payload.$signature";
     }
 
-    private function encode(string $str): string
-    {
-        return rtrim(strtr(base64_encode($str), '+/', '-_'), '='); // base64 encode string
+    private function token_alive($current_token): bool{
+        $token = explode('.', $current_token);
+        $payload = base64_decode($token[1]);
+
+        $time = new DateTime();
+        $current_time = $time->getTimestamp();
+
+        if ($current_time < json_decode($payload)->exp) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
-    public function is_valid(string $jwt): bool
+
+    public function get_token($data)
     {
-        $token = explode('.', $jwt); // explode token based on JWT breaks
+        $exist_in_black_list = $GLOBALS['link']->
+        query("SELECT token FROM BlackList WHERE email = '$data'")->fetch_assoc();
+
+        if (!is_null($exist_in_black_list)){
+            if ($this->token_alive($exist_in_black_list['token']))
+            {
+                return $exist_in_black_list['token'];
+            }
+
+            else
+            {
+                $GLOBALS['link']->query("DELETE FROM BlackList WHERE email = '$data'");
+                $new_token = $this->generate(['email' => $data]);
+                return $new_token;
+            }
+        }
+        else{
+            $new_token = $this->generate(['email' => $data]);
+            return $new_token;
+        }
+    }
+
+    public function check_token(): bool
+    {
+        $this->get_token_from_header();
+
+        $token = explode('.', $this->token); // explode token based on JWT breaks
         if (!isset($token[1]) && !isset($token[2])) {
             return false; // fails if the header and payload is not set
         }
@@ -54,10 +108,11 @@ class JWT
         }
 
         if (isset(json_decode($payload)->email)) {
-            $email_object = json_decode($payload)->email;
-            $email = $email_object->email;
+            $email = json_decode($payload)->email;
+
             $exist_email = $GLOBALS['link']->
-            query("SELECT email FROM User WHERE email = '$email'")->fetch_assoc();
+            query("SELECT id FROM User WHERE email = '$email'")->fetch_assoc();
+
             if (is_null($exist_email)){
                 return false;
             }
@@ -76,11 +131,13 @@ class JWT
         return ($base64_signature === $clientSignature);
     }
 
-    public function save_in_black_list($token){
-        echo json_encode($this->data);
-        echo json_encode($token);
+    public function save_in_black_list(){
         $GLOBALS['link']->query(
-            "INSERT BlackList (email, token) values('$this->data', '$token')"
+            "INSERT BlackList (email, token) values('$this->data', '$this->token')"
         );
+    }
+
+    public function get_email() {
+        return $this->data;
     }
 }

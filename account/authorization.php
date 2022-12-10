@@ -3,7 +3,7 @@ function authorization($data): void
 {
     include_once 'JWT.php';
     $jwt = new JWT;
-    $token = $jwt->generate(['email' => $data->email]);
+    $token = $jwt->get_token($data->email);
 
     include_once 'token_response.php';
     $token_response = new token_response($token);

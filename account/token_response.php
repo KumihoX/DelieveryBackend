@@ -8,7 +8,10 @@ class token_response
         $this->token = $data;
     }
 
-    public function get_token(): string{
-        return $this->token;
+    public function get_token(): array
+    {
+        $token = [];
+        $token['token']=$this->token;
+        return $token;
     }
 }
