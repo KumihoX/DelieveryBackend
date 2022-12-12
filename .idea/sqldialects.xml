@@ -6,8 +6,10 @@
     <file url="file://$PROJECT_DIR$/account/user_dto.php" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/account/user_edit_model.php" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/account/user_register_model.php" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/basket/delete_basket.php" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/basket/dish_basket_dto.php" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/basket/get_basket.php" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/basket/post_basket.php" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/dish/dish_dto.php" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/dish/dishes_page.php" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/index.php" dialect="MySQL" />

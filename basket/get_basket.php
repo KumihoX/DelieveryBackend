@@ -1,5 +1,6 @@
 <?php
-function get_basket(){
+function get_basket(): void
+{
     include_once 'account/JWT.php';
     $token = new JWT();
     if (!($token ->check_token())) {
@@ -16,7 +17,7 @@ function get_basket(){
     $dishes_in_basket = array();
     foreach ($data as $value) {
         $basket = new dish_basket_dto($value[0], $value[1]);
-        array_push($dishes_in_basket, $basket ->get_data());
+        $dishes_in_basket[] = $basket->get_data();
     }
 
     echo json_encode($dishes_in_basket);
