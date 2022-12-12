@@ -16,12 +16,18 @@ class dish_dto
         $data = $GLOBALS['link']->query("SELECT  name, description, price, image, vegetarian, rating
         FROM Dish WHERE id = '$id'")->fetch_assoc();
 
-        $this->name = $data['name'];
-        $this->description = $data['description'] ?? null;
-        $this->price = floatval($data['price']);
-        $this->image = $data['image'] ?? null;
-        $this->vegetarian = $this->vegetarian_in_bool($data['vegetarian']);
-        $this->rating = floatval($data['rating']) ?? null;
+        if (!is_null($data)){
+            $this->name = $data['name'];
+            $this->description = $data['description'] ?? null;
+            $this->price = floatval($data['price']);
+            $this->image = $data['image'] ?? null;
+            $this->vegetarian = $this->vegetarian_in_bool($data['vegetarian']);
+            $this->rating = floatval($data['rating']) ?? null;
+        }
+        else {
+            set_http_status(400, "This dish does not exist");
+            exit;
+        }
     }
 
     public function get_data(): array

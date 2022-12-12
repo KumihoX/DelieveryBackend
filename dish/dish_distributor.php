@@ -18,16 +18,23 @@ function dish_controller($method, $address, $data){
             }
             else
             {
-                if (is_null($address[3]))
+                if (is_null($address[2]))
                 {
-                    //api/dish/{id}
+                    if (preg_match($GLOBALS['uuid_pattern'],$address[1])){
+                        include_once "get_dish.php";
+                        get_dish($address[1]);
+                    }
+                    else {
+                        set_http_status(400, "Incorrect UUID");
+                        exit;
+                    }
                 }
                 else{
-                    if (is_null($address[4]) && $address[3] = 'rating')
+                    if (is_null($address[3]) && $address[2] = 'rating')
                     {
                         //api/dish/{id}/rating
                     }
-                    else if ($address[3] = 'rating' && $address[4] = 'check')
+                    else if ($address[2] = 'rating' && $address[3] = 'check')
                     {
                         //api/dish/{id}/rating/check
                     }
