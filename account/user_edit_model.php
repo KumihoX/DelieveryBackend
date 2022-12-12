@@ -7,6 +7,7 @@ class user_edit_model
     private string $gender;
     private string $address;
     private string $phoneNumber;
+    private array $errors = array();
 
     public function __construct($data){
         $this->check_name($data->fullName);
@@ -14,20 +15,26 @@ class user_edit_model
         $this->birthDate = isset($data->birthDate) ? date('d.m.Y', strtotime($data->birthDate)) : null;
         $this->check_gender($data->gender);
         $this->check_phone($data->phoneNumber);
+
+        if ($this->errors){
+            set_http_status(400, "One or more validation errors occurred", $this->errors);
+            exit;
+        }
     }
 
     private function check_name($name): void
     {
         if (strlen($name) < 1){
-            throw new Exception('Вы ввели слишком короткое имя');
+            $this->errors["Name"] = 'Вы ввели слишком короткое имя';
         }
         $this->fullName = $name;
     }
 
     private function check_gender($gender): void
     {
-        if ($gender != 'Male' && $gender != "Female"){
-            throw new Exception('Некоррекный гендер');
+        include_once 'gender.php';
+        if (!gender::check_gender($gender)){
+            $this->errors["Gender"] = 'Некоррекный гендер';
         }
         $this->gender = $gender;
     }
@@ -42,7 +49,7 @@ class user_edit_model
             $phone = null;
         }
         else if (!$phone_is_correct){
-            throw new Exception('Некоррекный номер телефона');
+            $this->errors["Phone"] = 'Некоррекный номер телефона';
         }
 
         $this->phoneNumber = $phone;
@@ -50,7 +57,6 @@ class user_edit_model
 
     public function save($email)
     {
-        echo json_encode($this->birthDate);
         $GLOBALS['link']->query(
             "UPDATE User 
                 SET 
@@ -61,6 +67,5 @@ class user_edit_model
                 phoneNumber = '$this->phoneNumber'
                 WHERE email = '$email'"
         );
-
     }
 }

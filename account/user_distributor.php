@@ -17,16 +17,34 @@
                         logout();
                         break;
                     default:
+                        set_http_status(404, "This no such path as 'api/$address[0]/$address[1]' with $method");
                         break;
                 }
                 break;
             case 'GET':
-                include_once 'profile.php';
-                get_profile();
+                switch ($address[1])
+                {
+                    case 'profile':
+                        include_once 'profile.php';
+                        get_profile();
+                        break;
+
+                    default:
+                        set_http_status(404, "This no such path as 'api/$address[0]/$address[1]' with $method");
+                        break;
+                }
                 break;
             case 'PUT':
-                include_once 'profile.php';
-                put_profile($data);
-                break;
+                switch ($address[1])
+                {
+                    case 'profile':
+                        include_once 'profile.php';
+                        put_profile($data);
+                        break;
+
+                    default:
+                        set_http_status(404, "This no such path as 'api/$address[0]/$address[1]' with $method");
+                        break;
+                }
         }
     }

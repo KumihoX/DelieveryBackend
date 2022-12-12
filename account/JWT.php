@@ -49,19 +49,14 @@ class JWT
         return "$headers.$payload.$signature";
     }
 
-    private function token_alive($current_token): bool{
+    private function token_alive($current_token): bool {
         $token = explode('.', $current_token);
         $payload = base64_decode($token[1]);
 
         $time = new DateTime();
         $current_time = $time->getTimestamp();
 
-        if ($current_time < json_decode($payload)->exp) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return ($current_time < json_decode($payload)->exp);
     }
 
 
@@ -73,19 +68,18 @@ class JWT
         if (!is_null($exist_in_black_list)){
             if ($this->token_alive($exist_in_black_list['token']))
             {
+                $GLOBALS['link']->query("DELETE FROM BlackList WHERE email = '$data'");
                 return $exist_in_black_list['token'];
             }
 
             else
             {
                 $GLOBALS['link']->query("DELETE FROM BlackList WHERE email = '$data'");
-                $new_token = $this->generate(['email' => $data]);
-                return $new_token;
+                return $this->generate(['email' => $data]);
             }
         }
         else{
-            $new_token = $this->generate(['email' => $data]);
-            return $new_token;
+            return $this->generate(['email' => $data]);
         }
     }
 
@@ -93,16 +87,16 @@ class JWT
     {
         $this->get_token_from_header();
 
-        $token = explode('.', $this->token); // explode token based on JWT breaks
+        $token = explode('.', $this->token);
         if (!isset($token[1]) && !isset($token[2])) {
-            return false; // fails if the header and payload is not set
+            return false;
         }
-        $headers = base64_decode($token[0]); // decode header, create variable
-        $payload = base64_decode($token[1]); // decode payload, create variable
-        $clientSignature = $token[2]; // create variable for signature
+        $headers = base64_decode($token[0]);
+        $payload = base64_decode($token[1]);
+        $clientSignature = $token[2];
 
         if (!json_decode($payload)) {
-            return false; // fails if payload does not decode
+            return false;
         }
 
         if (isset(json_decode($payload)->email)) {
