@@ -9,6 +9,7 @@
 
             case 'basket':
                 include_once 'basket/basket_distributor.php';
+                basket_controller($method, $address, $data);
                 break;
 
             case 'dish':
