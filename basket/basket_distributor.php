@@ -33,7 +33,7 @@ function basket_controller($method, $address, $data){
                 if (preg_match($GLOBALS['uuid_pattern'],$address[2]))
                 {
                     include_once "delete_basket.php";
-                    delete_basket($address[2]);
+                    delete_basket($address[2], $data->params);
                 }
                 else
                 {

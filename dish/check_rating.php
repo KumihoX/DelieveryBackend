@@ -14,10 +14,12 @@ function check_rating($dish_id): void
     ("SELECT rating FROM Rating WHERE dish = '$dish_id' AND user = '$email'") -> fetch_assoc();
 
     if (is_null($rating_exist)){
+        set_http_status();
         echo json_encode(false);
     }
 
     else{
+        set_http_status();
         echo json_encode(true);
     }
 }

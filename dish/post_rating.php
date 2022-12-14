@@ -2,6 +2,11 @@
 function post_rating($dish_id, $params){
     $rating = $params['rating'];
 
+    if ($rating > 10){
+        set_http_status(400, "Рейтинг должен быть меньше или равен 10");
+        exit;
+    }
+
     include_once 'account/JWT.php';
     $token = new JWT();
     if (!($token ->check_token())) {
@@ -17,9 +22,11 @@ function post_rating($dish_id, $params){
     if (is_null($user_rating)) {
         $GLOBALS['link']->query
         ("INSERT Rating (rating, user, dish) values('$rating', '$email', '$dish_id')");
+        set_http_status(200, "Рейтинг добавлен");
     }
     else{
         $GLOBALS['link']->query
         ("UPDATE Rating SET rating = '$rating' WHERE user = '$email' AND dish = '$dish_id'");
+        set_http_status(200, "Рейтинг обновлен");
     }
 }
