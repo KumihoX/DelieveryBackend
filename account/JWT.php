@@ -27,12 +27,12 @@ class JWT
         $headers = getallheaders();
         $auth = $headers['Authorization'];
         if (is_null($auth)){
-            set_http_status(400, "Токен авторизации отсутствует");
+            set_http_status(401, "Токен авторизации отсутствует");
             exit;
         }
         $auth_list = explode(' ', $auth);
         if (is_null($auth_list[1])){
-            set_http_status(400, "Токен авторизации отсутствует");
+            set_http_status(401, "Токен авторизации отсутствует");
             exit;
         }
         $this->token = $auth_list[1];
@@ -111,7 +111,7 @@ class JWT
 
         $token = explode('.', $this->token);
         if (!isset($token[1]) && !isset($token[2])) {
-            set_http_status(400, "Токен некорректен");
+            set_http_status(401, "Токен некорректен");
             exit;
         }
         $headers = base64_decode($token[0]);
@@ -119,7 +119,7 @@ class JWT
         $clientSignature = $token[2];
 
         if (!json_decode($payload)) {
-            set_http_status(400, "Токен некорректен");
+            set_http_status(401, "Токен некорректен");
             exit;
         }
 
@@ -130,13 +130,13 @@ class JWT
             query("SELECT id FROM User WHERE email = '$email'")->fetch_assoc();
 
             if (is_null($exist_email)){
-                set_http_status(400, "Токен некорректен");
+                set_http_status(401, "Токен некорректен");
                 exit;
             }
             $this->data = $email;
         }
         else {
-            set_http_status(400, "Токен некорректен");
+            set_http_status(401, "Токен некорректен");
             exit;
         }
 

@@ -20,5 +20,6 @@ function get_basket(): void
         $dishes_in_basket[] = $basket->get_data();
     }
 
+    set_http_status();
     echo json_encode($dishes_in_basket);
 }

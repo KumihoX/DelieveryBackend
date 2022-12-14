@@ -2,6 +2,10 @@
 function basket_controller($method, $address, $data){
     switch ($method) {
         case 'GET':
+            if (count($address) != 1){
+                set_http_status(404, "This no such path");
+                return;
+            }
             include_once "get_basket.php";
             get_basket();
             break;
