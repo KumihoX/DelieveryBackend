@@ -22,7 +22,7 @@ class JWT
         return rtrim(strtr(base64_encode($str), '+/', '-_'), '='); // base64 encode string
     }
 
-    private function get_token_from_header()
+    private function get_token_from_header(): void
     {
         $headers = getallheaders();
         $auth = $headers['Authorization'];

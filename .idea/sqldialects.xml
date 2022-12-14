@@ -12,6 +12,13 @@
     <file url="file://$PROJECT_DIR$/basket/post_basket.php" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/dish/dish_dto.php" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/dish/dishes_page.php" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/dish/post_rating.php" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/index.php" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/order/get_orders_list.php" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/order/order_create_dto.php" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/order/order_delivery.php" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/order/order_dto.php" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/order/order_info_dto.php" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/order/post_order.php" dialect="MySQL" />
   </component>
 </project>

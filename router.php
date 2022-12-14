@@ -19,6 +19,7 @@
 
             case 'order':
                 include_once 'order/order_distributor.php';
+                order_controller($method, $address, $data);
                 break;
 
             default:

@@ -2,14 +2,15 @@
 function dish_controller($method, $address, $data){
     switch ($method) {
         case 'POST':
-            switch ($address[3]) {
-                case 'rating':
-                    break;
-
-                default:
-                    set_http_status(404, "This no such path as 'api/dish'");
-                    break;
+            if (count($address) == 3) {
+                if (preg_match($GLOBALS['uuid_pattern'], $address[1]) && ($address[2] == 'rating')) {
+                    include_once 'post_rating.php';
+                    post_rating($address[1], $data->params);
+                }
             }
+            break;
+
+
         case 'GET':
             if (count($address) == 1)
             {
@@ -30,13 +31,10 @@ function dish_controller($method, $address, $data){
                     }
                 }
                 else{
-                    if (is_null($address[3]) && $address[2] = 'rating')
+                    if ($address[2] = 'rating' && $address[3] = 'check')
                     {
-                        //api/dish/{id}/rating
-                    }
-                    else if ($address[2] = 'rating' && $address[3] = 'check')
-                    {
-                        //api/dish/{id}/rating/check
+                        include_once 'check_rating.php';
+                        check_rating();
                     }
                     else
                     {
