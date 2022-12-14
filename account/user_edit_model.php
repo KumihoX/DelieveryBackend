@@ -41,6 +41,12 @@ class user_edit_model
             return;
         }
 
+        if (empty($birth))
+        {
+            $this->birthDate = null;
+            return;
+        }
+
         $current_time = new DateTime();
         $birth = str_replace('T', ' ', $birth);
 
@@ -70,6 +76,12 @@ class user_edit_model
     private function check_phone($phone): void
     {
         if (is_null($phone))
+        {
+            $this->phoneNumber = null;
+            return;
+        }
+
+        if (empty($phone))
         {
             $this->phoneNumber = null;
             return;
