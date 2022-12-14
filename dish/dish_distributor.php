@@ -34,7 +34,7 @@ function dish_controller($method, $address, $data){
                     if ($address[2] = 'rating' && $address[3] = 'check')
                     {
                         include_once 'check_rating.php';
-                        check_rating();
+                        check_rating($address[1]);
                     }
                     else
                     {

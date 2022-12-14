@@ -10,6 +10,7 @@
     <file url="file://$PROJECT_DIR$/basket/dish_basket_dto.php" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/basket/get_basket.php" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/basket/post_basket.php" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/dish/check_rating.php" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/dish/dish_dto.php" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/dish/dishes_page.php" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/dish/post_rating.php" dialect="MySQL" />
