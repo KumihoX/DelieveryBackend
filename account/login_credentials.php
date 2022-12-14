@@ -18,17 +18,27 @@ class login_credentials
 
     private function check_email($email): void
     {
+        if (is_null($email)){
+            $this->errors["Email"] = 'Отстутствует email';
+            return;
+        }
         $valid_email = filter_var($email, FILTER_VALIDATE_EMAIL);
         if (!$valid_email) {
             $this->errors["Email"] = 'Вы ввели неккоректный email';
+            return;
         }
         $this->email = $email;
     }
 
     private function check_password($password): void
     {
+        if (is_null($password)){
+            $this->errors["Password"] = 'Отсутствует пароль';
+            return;
+        }
         if (strlen($password) < 6){
             $this->errors["Password"] = 'Вы ввели слишком короткий пароль';
+            return;
         }
         $this->password = hash("sha1", $password);
     }

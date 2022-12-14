@@ -4,7 +4,7 @@
         switch($address[0]) {
             case 'account':
                 include_once 'account/user_distributor.php';
-                user_distributor($method, $address, $data);
+                user_controller($method, $address, $data);
                 break;
 
             case 'basket':

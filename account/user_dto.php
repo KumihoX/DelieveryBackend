@@ -1,14 +1,13 @@
 <?php
-//TODO: Сделать преобразование даты в правильный тип
 class user_dto
 {
     private string $id;
     private string $fullName;
     private string $email;
-    private string $address;
-    private string $birthDate;
+    private $address;
+    private $birthDate;
     private string $gender;
-    private string $phoneNumber;
+    private $phoneNumber;
 
     public function __construct($email){
         $data = $GLOBALS['link']->query

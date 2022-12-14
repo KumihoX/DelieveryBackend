@@ -3,16 +3,16 @@
 class user_edit_model
 {
     private string $fullName;
-    private string $birthDate;
+    private $birthDate;
     private string $gender;
-    private string $address;
-    private string $phoneNumber;
+    private $address;
+    private $phoneNumber;
     private array $errors = array();
 
     public function __construct($data){
         $this->check_name($data->fullName);
         $this->address = $data->address ?? null;
-        $this->birthDate = isset($data->birthDate) ? date('d.m.Y', strtotime($data->birthDate)) : null;
+        $this->check_birth($data->birthDate);
         $this->check_gender($data->gender);
         $this->check_phone($data->phoneNumber);
 
@@ -24,14 +24,42 @@ class user_edit_model
 
     private function check_name($name): void
     {
+        if (is_null($name)){
+            $this->errors["Name"] = 'Имя отсутствует';
+            return;
+        }
         if (strlen($name) < 1){
             $this->errors["Name"] = 'Вы ввели слишком короткое имя';
         }
         $this->fullName = $name;
     }
 
+    private function check_birth($birth){
+        if (is_null($birth))
+        {
+            $this->birthDate = null;
+            return;
+        }
+
+        $current_time = new DateTime();
+        $birth = str_replace('T', ' ', $birth);
+
+        $formatted_birth = DateTime::createFromFormat('Y-m-d H:i:s', $birth);
+        if (!$formatted_birth) {
+            $this->errors['BirthDate'] = "Неккоректная дата рождения";
+        } else if ($current_time->getTimestamp() <= $formatted_birth->getTimestamp()) {
+            $this->errors['BirthDate'] = "Неккоректная дата рождения: Вы не можете родиться сегодня или в будущем";
+        } else {
+            $this->birthDate = $formatted_birth->format('Y-m-d H:i:s');
+        }
+    }
+
     private function check_gender($gender): void
     {
+        if (is_null($gender)){
+            $this->errors["Gender"] = 'Гендер отсутствует';
+            return;
+        }
         include_once 'gender.php';
         if (!gender::check_gender($gender)){
             $this->errors["Gender"] = 'Некоррекный гендер';
@@ -41,6 +69,11 @@ class user_edit_model
 
     private function check_phone($phone): void
     {
+        if (is_null($phone))
+        {
+            $this->phoneNumber = null;
+            return;
+        }
         $number_without_space = preg_replace('/\s/','', $phone);
         $correct_number_pattern = '/\+7\([0-9]{3}\)[0-9]{3}-[0-9]{2}-[0-9]{2}/';
 
@@ -57,14 +90,15 @@ class user_edit_model
 
     public function save($email)
     {
+        include_once 'check_on_null.php';
         $GLOBALS['link']->query(
             "UPDATE User 
                 SET 
                 fullName = '$this->fullName',
-                birthDate = '$this->birthDate',
+                birthDate = ".check_on_null($this->birthDate).",
                 gender = '$this->gender',
-                address = '$this->address',
-                phoneNumber = '$this->phoneNumber'
+                address = ".check_on_null($this->address).",
+                phoneNumber = ".check_on_null($this->phoneNumber)."
                 WHERE email = '$email'"
         );
     }

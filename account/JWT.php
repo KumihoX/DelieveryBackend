@@ -26,7 +26,15 @@ class JWT
     {
         $headers = getallheaders();
         $auth = $headers['Authorization'];
+        if (is_null($auth)){
+            set_http_status(400, "Токен авторизации отсутствует");
+            exit;
+        }
         $auth_list = explode(' ', $auth);
+        if (is_null($auth_list[1])){
+            set_http_status(400, "Токен авторизации отсутствует");
+            exit;
+        }
         $this->token = $auth_list[1];
     }
 
@@ -60,21 +68,20 @@ class JWT
     }
 
 
-    public function get_token($data)
+    public function get_token($data): string
     {
         $exist_in_black_list = $GLOBALS['link']->
         query("SELECT token FROM BlackList WHERE email = '$data'")->fetch_assoc();
 
         if (!is_null($exist_in_black_list)){
+            $GLOBALS['link']->query("DELETE FROM BlackList WHERE email = '$data'");
             if ($this->token_alive($exist_in_black_list['token']))
             {
-                $GLOBALS['link']->query("DELETE FROM BlackList WHERE email = '$data'");
                 return $exist_in_black_list['token'];
             }
 
             else
             {
-                $GLOBALS['link']->query("DELETE FROM BlackList WHERE email = '$data'");
                 return $this->generate(['email' => $data]);
             }
         }
@@ -96,7 +103,8 @@ class JWT
         $clientSignature = $token[2];
 
         if (!json_decode($payload)) {
-            return false;
+            set_http_status(400, "Токен некорректен");
+            exit;
         }
 
         if (isset(json_decode($payload)->email)) {
@@ -106,12 +114,14 @@ class JWT
             query("SELECT id FROM User WHERE email = '$email'")->fetch_assoc();
 
             if (is_null($exist_email)){
-                return false;
+                set_http_status(400, "Токен некорректен");
+                exit;
             }
             $this->data = $email;
         }
         else {
-            return false;
+            set_http_status(400, "Токен некорректен");
+            exit;
         }
 
         $base64_header = $this->encode($headers);

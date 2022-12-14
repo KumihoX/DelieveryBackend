@@ -1,9 +1,16 @@
 <?php
-    function user_distributor($method, $address, $data): void
+    function user_controller($method, $address, $data): void
     {
-        switch ($method) {
+        if (count($address) != 2)
+        {
+            set_http_status(404, "This no such path");
+            return;
+        }
+        switch ($method)
+        {
             case 'POST':
-                switch ($address[1]){
+                switch ($address[1])
+                {
                     case 'register':
                         include_once 'register.php';
                         register($data);
@@ -46,5 +53,6 @@
                         set_http_status(404, "This no such path as 'api/$address[0]/$address[1]' with $method");
                         break;
                 }
+
         }
     }
