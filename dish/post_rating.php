@@ -1,6 +1,6 @@
 <?php
 function post_rating($dish_id, $params){
-    $rating = $params['rating'];
+    $rating = $params['ratingScore'];
 
     if (is_null($rating)){
         set_http_status(400, "Рейтинг не задан");

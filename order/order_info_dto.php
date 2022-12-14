@@ -18,6 +18,7 @@ class order_info_dto
         $order_info = $GLOBALS['link']->query("SELECT id, deliveryTime, orderTime, status, price
         FROM OrderTable WHERE id = '$order_id'")->fetch_assoc();
 
+        $order_info['price'] = intval($order_info['price']);
         $this->orders[] = $order_info;
     }
 }

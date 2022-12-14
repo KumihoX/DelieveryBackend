@@ -52,7 +52,6 @@ class order_create_dto
 
     private function price_calculation($user, $order_id){
         $dish_id = $GLOBALS['link']->query("SELECT dish, amount FROM Basket WHERE user = '$user'")->fetch_all();
-        echo json_encode($dish_id);
         $GLOBALS['link']->query("DELETE FROM Basket WHERE user = '$user'");
 
         $order_total_price = 0;
