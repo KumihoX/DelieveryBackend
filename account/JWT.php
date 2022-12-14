@@ -67,6 +67,17 @@ class JWT
         return ($current_time < json_decode($payload)->exp);
     }
 
+    private function check_in_blacklist(): bool
+    {
+        $in_black_list = $GLOBALS['link']->
+        query("SELECT email FROM BlackList WHERE token = '$this->token'") -> fetch_assoc();
+
+        if (is_null($in_black_list)){
+            return false;
+        }
+        return true;
+    }
+
 
     public function get_token($data): string
     {
@@ -93,10 +104,15 @@ class JWT
     public function check_token(): bool
     {
         $this->get_token_from_header();
+        if ($this->check_in_blacklist()){
+            set_http_status(401, "Вы не авторизованы");
+            exit;
+        }
 
         $token = explode('.', $this->token);
         if (!isset($token[1]) && !isset($token[2])) {
-            return false;
+            set_http_status(400, "Токен некорректен");
+            exit;
         }
         $headers = base64_decode($token[0]);
         $payload = base64_decode($token[1]);
