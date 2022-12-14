@@ -3,7 +3,7 @@ function basket_controller($method, $address, $data){
     switch ($method) {
         case 'GET':
             if (count($address) != 1){
-                set_http_status(404, "This no such path");
+                set_http_status(404, "This no such path as 'api/$address[0]...'");
                 return;
             }
             include_once "get_basket.php";
@@ -26,7 +26,7 @@ function basket_controller($method, $address, $data){
             }
             else
             {
-                set_http_status(404, "This no such path");
+                set_http_status(404, "This no such path as 'api/$address[0]...'");
                 break;
             }
             break;
@@ -47,7 +47,7 @@ function basket_controller($method, $address, $data){
             }
             else
             {
-                set_http_status(404, "This no such path");
+                set_http_status(404, "This no such path as 'api/$address[0]...'");
                 break;
             }
             break;

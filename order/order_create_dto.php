@@ -18,6 +18,10 @@ class order_create_dto
 
     private function check_delivery_time($deliveryTime)
     {
+        if (is_null($deliveryTime)){
+            $this->errors["DeliveryTime"] = 'Дата доставки отсутствует';
+            return;
+        }
         $current_time = new DateTime();
         $deliveryTime = str_replace('T', ' ', $deliveryTime);
         $formattedDate = DateTime::createFromFormat('Y-m-d H:i:s', $deliveryTime);
@@ -36,6 +40,10 @@ class order_create_dto
 
     private function check_address($address): void
     {
+        if (is_null($address)){
+            $this->errors["Address"] = 'Адрес отсутствует';
+            return;
+        }
         if (strlen($address) < 1){
             $this->errors["Address"] = 'Вы ввели некорректный адрес';
         }

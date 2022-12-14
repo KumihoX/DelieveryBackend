@@ -26,21 +26,14 @@ function delete_basket($dish_id, $increase)
         set_http_status(404, "Такого блюда нет в корзине");
         exit;
     }
-    else if (!$increase)
+    else if ($increase == 'false' || ($count['amount'] == '1' && $increase == 'true'))
     {
         $GLOBALS['link']->query("DELETE FROM Basket WHERE (dish = '$dish_id' AND user = '$email')");
         set_http_status(200, "Блюдо удалено");
     }
-    else if ($increase)
+    else if ($increase == 'true')
     {
-        if ($count['amount'] == '1')
-        {
-            $GLOBALS['link']->query("DELETE FROM Basket WHERE (dish = '$dish_id' AND user = '$email')");
-        }
-        else
-        {
-            $GLOBALS['link']->query("UPDATE Basket SET amount = amount - 1 WHERE (dish = '$dish_id' AND user = '$email')");
-        }
+        $GLOBALS['link']->query("UPDATE Basket SET amount = amount - 1 WHERE (dish = '$dish_id' AND user = '$email')");
         set_http_status(200, "Количество уменьшено");
     }
     else

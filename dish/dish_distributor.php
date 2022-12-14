@@ -3,7 +3,7 @@ function dish_controller($method, $address, $data){
     switch ($method) {
         case 'POST':
             if (count($address) != 3) {
-                set_http_status(404, "This no such path");
+                set_http_status(404, "This no such path as 'api/$address[0]...'");
                 return;
             }
             if (!preg_match($GLOBALS['uuid_pattern'], $address[1]) || !($address[2] == 'rating')) {
@@ -50,7 +50,7 @@ function dish_controller($method, $address, $data){
                 }
                 else
                 {
-                    set_http_status(404, "This no such path");
+                    set_http_status(404, "This no such path as 'api/$address[0]...'");
                 }
             }
             break;

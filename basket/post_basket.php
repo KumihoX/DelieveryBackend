@@ -29,10 +29,12 @@ function post_basket($dish_id): void
             '$email',
             '$dish_id'
         )");
+        set_http_status(200, "Блюдо добавлено в корзину");
     }
     else
     {
         $GLOBALS['link']->query("UPDATE Basket SET amount = amount + 1 WHERE (dish = '$dish_id' AND user = '$email')");
+        set_http_status(200, "Количество увеличено");
     }
-    set_http_status(200, "Quantity increased");
+
 }

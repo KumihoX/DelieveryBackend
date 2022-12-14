@@ -2,8 +2,21 @@
 function post_rating($dish_id, $params){
     $rating = $params['rating'];
 
+    if (is_null($rating)){
+        set_http_status(400, "Рейтинг не задан");
+        exit;
+    }
+
     if ($rating > 10){
         set_http_status(400, "Рейтинг должен быть меньше или равен 10");
+        exit;
+    }
+
+    $dish_exist = $GLOBALS['link']->
+    query("SELECT name FROM Dish WHERE id = '$dish_id'")->fetch_assoc();
+
+    if (is_null($dish_exist)){
+        set_http_status(404, "Такого блюда не существует");
         exit;
     }
 

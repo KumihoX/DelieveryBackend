@@ -1,5 +1,6 @@
 <?php
-function get_orders_list(){
+function get_orders_list(): void
+{
     include_once 'account/JWT.php';
     $token = new JWT();
     if (!($token ->check_token())) {
@@ -18,5 +19,6 @@ function get_orders_list(){
         $order_info->add_order($value[0]);
     }
 
+    set_http_status();
     echo json_encode($order_info->get_data());
 }

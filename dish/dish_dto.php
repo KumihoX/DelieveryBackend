@@ -25,7 +25,7 @@ class dish_dto
             $this->rating = floatval($data['rating']) ?? null;
         }
         else {
-            set_http_status(404, "This dish does not exist");
+            set_http_status(404, "Такого блюда не существует");
             exit;
         }
     }

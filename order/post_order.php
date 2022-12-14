@@ -1,5 +1,5 @@
 <?php
-function post_order($data)
+function post_order($data): void
 {
     include_once 'order_create_dto.php';
     $order_create = new order_create_dto($data);
@@ -18,4 +18,5 @@ function post_order($data)
     $uuid = $uuid->get_uuid();
 
     $order_create->save($email, $uuid);
+    set_http_status(200, "Заказ оформлен");
 }

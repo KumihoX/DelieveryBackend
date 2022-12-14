@@ -74,10 +74,10 @@ class user_edit_model
             $this->phoneNumber = null;
             return;
         }
-        $number_without_space = preg_replace('/\s/','', $phone);
-        $correct_number_pattern = '/\+7\([0-9]{3}\)[0-9]{3}-[0-9]{2}-[0-9]{2}/';
 
-        $phone_is_correct = preg_match($correct_number_pattern, $number_without_space);
+        $correct_number_pattern = '/^\+7\s\([0-9]{3}\)\s[0-9]{3}-[0-9]{2}-[0-9]{2}/';
+
+        $phone_is_correct = preg_match($correct_number_pattern, $phone);
         if (!isset($phone)){
             $phone = null;
         }
