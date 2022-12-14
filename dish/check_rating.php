@@ -1,5 +1,6 @@
 <?php
-function check_rating($dish_id){
+function check_rating($dish_id): void
+{
     include_once 'account/JWT.php';
     $token = new JWT();
     if (!($token ->check_token())) {

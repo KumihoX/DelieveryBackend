@@ -31,7 +31,8 @@ function get_dishes_list($data) {
     }
     else
     {
-        set_http_status(404, "Not found");
+        set_http_status(404, "Страница не найдена");
+        exit;
     }
 }
 
@@ -57,7 +58,7 @@ function add_categories($categories)
             }
             else {
                 $error = array();
-                $error["Category"] = "Некорректные данные";
+                $error["Category"] = "Категории $value не существует";
                 set_http_status(400, "One or more validation errors occurred", $error);
                 exit;
             }
@@ -72,7 +73,7 @@ function add_categories($categories)
 
         else {
             $error = array();
-            $error["Category"] = "Некорректные данные";
+            $error["Category"] = "Категории $categories не существует";
             set_http_status(400, "One or more validation errors occurred", $error);
             exit;
         }
@@ -126,7 +127,7 @@ function sorting($sorting){
 
         default:
             $error = array();
-            $error["Sorting"] = "Некорректные данные";
+            $error["Sorting"] = "Сортировки $sorting не существует";
             set_http_status(400, "One or more validation errors occurred", $error);
             exit;
     }

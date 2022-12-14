@@ -25,7 +25,7 @@ class dish_dto
             $this->rating = floatval($data['rating']) ?? null;
         }
         else {
-            set_http_status(400, "This dish does not exist");
+            set_http_status(404, "This dish does not exist");
             exit;
         }
     }
@@ -44,14 +44,12 @@ class dish_dto
         return $data_list;
     }
 
-    private function vegetarian_in_bool($value){
-        switch ($value){
-            case "1":
-                return true;
-
-            default:
-                return false;
-        }
+    private function vegetarian_in_bool($value): bool
+    {
+        return match ($value) {
+            "1" => true,
+            default => false,
+        };
     }
 
 }
