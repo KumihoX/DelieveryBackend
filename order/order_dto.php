@@ -17,14 +17,20 @@ class order_dto
         $order_info = $GLOBALS['link']->query("SELECT id, deliveryTime, orderTime, status, price, address
         FROM OrderTable WHERE id = '$order_id' and user = '$user'")->fetch_assoc();
 
-        $this->id = $order_info['id'];
-        $this->deliveryTime = $order_info['deliveryTime'];
-        $this->orderTime = $order_info['orderTime'];
-        $this->status = $order_info['status'];
-        $this->price = $order_info['price'];
-        $this->address = $order_info['address'];
+        if (!is_null($order_info))
+        {
+            $this->id = $order_info['id'];
+            $this->deliveryTime = $order_info['deliveryTime'];
+            $this->orderTime = $order_info['orderTime'];
+            $this->status = $order_info['status'];
+            $this->price = $order_info['price'];
+            $this->address = $order_info['address'];
 
-        $this->dishes_list();
+            $this->dishes_list();
+        }
+
+        set_http_status(404, "Такой заказ не найден");
+        exit;
     }
 
     public function get_order_info()
