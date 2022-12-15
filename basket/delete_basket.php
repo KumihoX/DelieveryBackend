@@ -26,7 +26,7 @@ function delete_basket($dish_id, $increase)
         set_http_status(404, "Такого блюда нет в корзине");
         exit;
     }
-    else if ($increase == false || ($count['amount'] == '1' && $increase == 'true'))
+    else if ($increase == false || ($count['amount'] == '1' && $increase == true))
     {
         $GLOBALS['link']->query("DELETE FROM Basket WHERE (dish = '$dish_id' AND user = '$email')");
         set_http_status(200, "Блюдо удалено");
